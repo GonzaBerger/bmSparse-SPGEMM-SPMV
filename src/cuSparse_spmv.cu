@@ -66,13 +66,8 @@ void cusparse_spmv(cusp::csr_matrix<int, float,cusp::device_memory> &A,
         cusparseSpMatDescr_t descrA;
         cusparseStatus_t stat;
         stat = cusparseCreateCsr(&descrA,
-<<<<<<< HEAD
                   m, //n
                   n, //m
-=======
-                  n,
-                  m,
->>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
                   nnz,
                   (void*) A_row_offsets,
                   (void*) A_column_indices,

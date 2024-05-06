@@ -3,7 +3,7 @@ list=lista9.txt
 
 batched=0
 
-rm out.txt
+rm spmv_out.txt
 while read line; do
   matrix="$(basename -- ${line%})"
 

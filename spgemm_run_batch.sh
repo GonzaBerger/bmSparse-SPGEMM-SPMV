@@ -5,7 +5,7 @@ segmented=0
 tc_version=5
 verbose=0
 
-rm out.txt
+rm spgemm_out.txt
 while read line; do
   matrix="$(basename -- ${line%})"
 
