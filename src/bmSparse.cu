@@ -576,6 +576,7 @@ void spmv_kernel(uint64_t* first_blocks, uint64_t* A_keys,/*uint64_t* column_ind
 
 }
 
+<<<<<<< HEAD
 
 template <class ValueIn, class ValueOut>
 __global__
@@ -638,6 +639,8 @@ void spmv_kernel_no_shmem(uint64_t* first_blocks, uint64_t* A_keys,/*uint64_t* c
 
 
 
+=======
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
 template <class ValueIn, class ValueOut>
 __global__
 void spmv_kernel_equitative(uint64_t* first_blocks, uint64_t* A_keys,/*uint64_t* column_indices,*/ ValueIn* A_values, ValueIn* v, ValueOut* u, uint64_t* A_bmps, uint64_t* A_offsets, int n, int blksPerCudaBlock){
@@ -2154,7 +2157,11 @@ int main(int argc, char** argv) {
 	std::chrono::steady_clock::time_point start, end;
 
 	cusp::csr_matrix<int, OUTPUT_TYPE, cusp::device_memory> correct_result;
+<<<<<<< HEAD
 	if (!exec_cusparse) { //CAMBIAR
+=======
+	if (exec_cusparse) {
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
 		start = std::chrono::steady_clock::now();
 		cusp::csr_matrix<int, OUTPUT_TYPE, cusp::device_memory> A_csr, B_csr;
 		cusp::io::read_matrix_market_file(A_csr, A_path + ".mtx");
@@ -2221,7 +2228,11 @@ int main(int argc, char** argv) {
 	
                 OUTPUT_TYPE *v, *u, *vcpu;
 		
+<<<<<<< HEAD
 		//start = std::chrono::steady_clock::now();
+=======
+		start = std::chrono::steady_clock::now();
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
 	      	bmSpMatrix<OUTPUT_TYPE> A_matrix(A_path/* + ".mtx"*/, false);
 
 
@@ -2231,9 +2242,12 @@ int main(int argc, char** argv) {
                 for(int i=0; i<A_matrix.num_cols;i++){
                         vcpu[i] = 1;
                 }
+<<<<<<< HEAD
 
 		start = std::chrono::steady_clock::now();
 
+=======
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
                 cudaMemcpy(v, vcpu, sizeof(OUTPUT_TYPE)* A_matrix.num_cols,  cudaMemcpyHostToDevice);
 
 	   	end = std::chrono::steady_clock::now();
@@ -2260,6 +2274,7 @@ int main(int argc, char** argv) {
 
 
 		/*Cusparse*/
+<<<<<<< HEAD
 		auto bmSpTime = std::chrono::duration_cast<std::chrono::microseconds>(end-start).count();
 
 		if(exec_cusparse){
@@ -2297,6 +2312,40 @@ int main(int argc, char** argv) {
 	
 		if(!exec_cusparse){
 
+=======
+
+
+
+
+                cusp::csr_matrix<int, OUTPUT_TYPE, cusp::device_memory> A_csr;
+                cusp::io::read_matrix_market_file(A_csr, A_path/* + ".mtx"*/);
+
+		start = std::chrono::steady_clock::now();
+
+		cusparseHandle_t handle;
+		cusparseStatus_t status = cusparseCreate(&handle); 
+
+		end = std::chrono::steady_clock::now();
+		parsingTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+		std::cout << "cuSparse handle: " << parsingTime << " μs\n"; 
+
+		//CUSPARSE_CHECK(status);
+		start = std::chrono::steady_clock::now();                
+
+		//cusparse_spmv(A_csr, v, u, handle);
+		cusparse_spmv(A_csr, v, u, handle, output);
+		cudaDeviceSynchronize();
+		
+		end = std::chrono::steady_clock::now();
+                auto bmSpTime = std::chrono::duration_cast<std::chrono::microseconds>(
+                                end - start).count();
+                //cudaDeviceSynchronize();
+		std::cout << "Cusparse SpMV execution: " << bmSpTime << " μs\n";
+		output << std::to_string(bmSpTime) + ","; //Total Time CUSP
+		//output << ",";
+		cudaMemcpy(u_cusp, u, sizeof(OUTPUT_TYPE)* A_matrix.num_rows, cudaMemcpyDeviceToHost);
+	
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
 		/*BmSparse*/
                	cudaDeviceSynchronize();
                 start = std::chrono::steady_clock::now();           
@@ -2329,7 +2378,11 @@ int main(int argc, char** argv) {
 			}
         }
 
+<<<<<<< HEAD
 }
+=======
+
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
 	}
 
 	return 0;

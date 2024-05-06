@@ -12,7 +12,11 @@ VALUE_TYPE = float
 # NVCC_FLAGS = -g -O3 -w -m64 -gencode=arch=compute_30,code=sm_30 -gencode=arch=compute_30,code=compute_30
 # NVCC_FLAGS = -O3 -w -m64 -gencode=arch=compute_52,code=sm_52 -gencode=arch=compute_52,code=compute_52
 
+<<<<<<< HEAD
 NVCC_FLAGS = -O3 -w -arch=sm_86 -Xptxas -dlcm=ca --expt-extended-lambda --expt-relaxed-constexpr #--expt-extended-lambda
+=======
+NVCC_FLAGS = -arch=sm_86 -Xptxas -dlcm=ca --expt-extended-lambda --expt-relaxed-constexpr #--expt-extended-lambda
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
 #NVCC_FLAGS = -O3 -w -m64 -arch=sm_30
 
 #NVCC_FLAGS = -Xcompiler -fopenmp -O3 -w -m64 -gencode=arch=compute_60,code=sm_60 -gencode=arch=compute_60,code=compute_60 -Xptxas -dlcm=cg
@@ -40,13 +44,18 @@ LIBS = $(CUDA_LIBS) $(CLANG_LIBS) $(MKL_LIBS)
 
 #FILES = main.c 
  
+<<<<<<< HEAD
 FILES_SPGEMM = src/bmSparse_SPGEMM.cu \
+=======
+FILES = src/bmSparse.cu \
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
 	src/bmSpMatrix.cu \
         src/cuSparse_mult.cu \
 	src/cuSparse_spmv.cu \
         src/reader.cu \
 	#src/blkDensity.cu
 
+<<<<<<< HEAD
 FILES_SPMV = src/bmSparse_SPMV.cu \
 			 src/bmSpMatrix.cu \
 			 src/cuSparse_spmv.cu \
@@ -65,3 +74,9 @@ spmv:
 
 bmsparse:
 	$(CC) $(NVCC_FLAGS) $(FILES_BMSPARSE) -o bmsparse_$(VALUE_TYPE) $(INCLUDES) $(LIBS) $(OPTIONS) -D VALUE_TYPE=$(VALUE_TYPE) -D__$(VALUE_TYPE)__
+=======
+
+make:
+	#$(CC) $(NVCC_FLAGS) $(FILES) -o bmsparse_$(VALUE_TYPE) $(INCLUDES) -D VALUE_TYPE=$(VALUE_TYPE) -D__$(VALUE_TYPE)__
+	$(CC) $(NVCC_FLAGS) $(FILES) -o bmsparse_$(VALUE_TYPE) $(INCLUDES) $(LIBS) $(OPTIONS) -D VALUE_TYPE=$(VALUE_TYPE) -D__$(VALUE_TYPE)__
+>>>>>>> 7a2e3211c04a7e2059e8279160648d6e25bce12e
